@@ -16,7 +16,8 @@ class UserTest extends KernelTestCase
 
     public function testRegister(): void
     {
-        $user = new User("GgYwH@example.com", "password");
+        $randomString = bin2hex(random_bytes(10));
+        $user = new User("$randomString@example.com", "$randomString");
 
         $result = $this->container->get(UserServiceInterface::class)->register($user);
 

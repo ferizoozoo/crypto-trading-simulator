@@ -22,7 +22,7 @@ class User
     public function __construct(string $email, string $password)
     {
         $this->email = $email;
-        $this->password = $password;
+        $this->password = password_hash($password, PASSWORD_BCRYPT);
     }
 
     public function getEmail(): string
