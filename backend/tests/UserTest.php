@@ -1,26 +1,30 @@
 <?php
 
 use App\Controller\Services\UserServiceInterface;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use App\Entities\User;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class UserTest extends KernelTestCase
+class UserTest extends WebTestCase
 {
     private $container;
+    private $client;
 
     public function setUp(): void
     {
-        self::bootKernel();
-        $this->container = self::getContainer();
+        $this->client = static::createClient();
+        $this->container = static::getContainer();
     }
 
     public function testRegister(): void
     {
         $randomString = bin2hex(random_bytes(10));
-        $user = new User("$randomString@example.com", "$randomString");
+        // $user = new User("$randomString@example.com", "$randomString");
 
-        $result = $this->container->get(UserServiceInterface::class)->register($user);
-
-        $this->assertTrue($result);
+        $user = [
+            'email' => "$randomString@example.com",
+            'password' => "$randomString",
+        ];
+        $this->client->request('POST', '/user/register', [], [], ['CONTENT_TYPE' => 'application/json'], json_encode($user));
+        $this->assertResponseIsSuccessful();
     }
 }
