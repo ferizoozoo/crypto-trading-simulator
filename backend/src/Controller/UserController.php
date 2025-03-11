@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Controller\Services\UserServiceInterface;
 use App\Entities\User;
-use PHPUnit\Util\Json;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,8 +23,12 @@ class UserController extends AbstractController
     #[Route('/register', name: 'app_user_register', methods: ['POST'])]
     public function register(Request $request): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
-        $this->userService->register(new User($data['email'], $data['password']));
-        return $this->json([], Response::HTTP_CREATED);
+        try {
+            $data = json_decode($request->getContent(), true);
+            $this->userService->register(new User($data['email'], $data['password']));
+            return $this->json([], Response::HTTP_CREATED);
+        } catch (\Exception $exception) {
+            return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
+        }
     }
 }
