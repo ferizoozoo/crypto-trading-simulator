@@ -1,0 +1,41 @@
+# Binaries and executables
+/bin/
+/out/
+/dist/
+*.exe
+*.dll
+*.so
+*.dylib
+*.test
+*.a
+
+# Go-related
+*.o
+*.log
+*.sum
+/vendor/
+
+# Compiled object files
+*.obj
+*.pdb
+*.lib
+
+# Editor and IDE settings
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Environment variables and secrets
+.env
+.env.local
+config.yaml
+
+# Debug files
+*.trace
+*.prof
+*.dump
