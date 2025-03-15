@@ -1,14 +1,25 @@
 package engine
 
 type OrderBook struct {
-	BuyOrders *Queue
+	BuyOrders  *Queue
+	SellOrders *Queue
 }
 
 func NewOrderBook() *OrderBook {
-	return &OrderBook{BuyOrders: NewQueue()}
+	return &OrderBook{
+		BuyOrders:  NewQueue(),
+		SellOrders: NewQueue(),
+	}
 }
 
 func (ob *OrderBook) PlaceOrder(order *Order) error {
-	ob.BuyOrders.Enqueue(order)
+	if order.Type == BUY {
+		ob.BuyOrders.Enqueue(order)
+	}
+
+	if order.Type == SELL {
+		ob.SellOrders.Enqueue(order)
+	}
+
 	return nil
 }

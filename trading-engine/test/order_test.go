@@ -31,6 +31,23 @@ func TestBuyOrder(t *testing.T) {
 	}
 }
 
-func testShouldRejectOrderWithInsufficientFunds(t *testing.T) {
+func TestSellOrder(t *testing.T) {
+	ob := setUp()
 
+	order := engine.Order{
+		UserID: 1,
+		Price:  100,
+		Size:   10,
+		Type:   engine.SELL,
+	}
+
+	err := ob.PlaceOrder(&order)
+
+	if err != nil {
+		t.Errorf("Expected no error, but got: %v", err)
+	}
+
+	if ob.SellOrders.Size() == 0 {
+		t.Errorf("Expected at least one buy order, but got none")
+	}
 }

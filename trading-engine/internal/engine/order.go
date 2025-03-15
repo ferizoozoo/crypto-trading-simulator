@@ -11,4 +11,5 @@ type OrderType int
 
 const (
 	BUY OrderType = iota + 1
+	SELL
 )
