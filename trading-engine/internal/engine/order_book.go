@@ -1,15 +1,14 @@
 package engine
 
 type OrderBook struct {
-	BuyOrders []*Order
+	BuyOrders *Queue
 }
 
 func NewOrderBook() *OrderBook {
-	return &OrderBook{BuyOrders: []*Order{}}
+	return &OrderBook{BuyOrders: NewQueue()}
 }
 
 func (ob *OrderBook) PlaceOrder(order *Order) error {
-	ob.BuyOrders = append(ob.BuyOrders, order)
-
+	ob.BuyOrders.Enqueue(order)
 	return nil
 }

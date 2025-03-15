@@ -26,7 +26,11 @@ func TestBuyOrder(t *testing.T) {
 		t.Errorf("Expected no error, but got: %v", err)
 	}
 
-	if len(ob.BuyOrders) == 0 {
+	if ob.BuyOrders.Size() == 0 {
 		t.Errorf("Expected at least one buy order, but got none")
 	}
+}
+
+func testShouldRejectOrderWithInsufficientFunds(t *testing.T) {
+
 }
