@@ -28,6 +28,7 @@ class AuthController extends AbstractController
     #[Route('/register', name: 'app_user_register', methods: ['POST'])]
     public function register(Request $request): JsonResponse
     {
+        // TODO: maybe refactor the logic into a global exception handler
         try {
             $data = json_decode($request->getContent(), true);
             $this->userService->register(new User($data['email'], $data['password']));
@@ -40,6 +41,7 @@ class AuthController extends AbstractController
     #[Route('/login', name: 'app_user_login', methods: ['POST'])]
     public function login(#[CurrentUser] ?UserInterface $user, JWTTokenManagerInterface $jwtManager): JsonResponse
     {
+        // TODO: maybe refactor the logic into a global exception handler
         try {
             if (!$user) {
                 return $this->json(['error' => 'Invalid credentials'], Response::HTTP_UNAUTHORIZED);
