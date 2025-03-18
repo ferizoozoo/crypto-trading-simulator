@@ -1,24 +1,31 @@
 package engine
 
+import "github.com/ferizoozoo/crypto-trading-simulator/trading-engine/internal/queue"
+
 type OrderBook struct {
-	BuyOrders  *Queue
-	SellOrders *Queue
+	BuyOrders  *queue.PriorityQueue
+	SellOrders *queue.PriorityQueue
 }
 
 func NewOrderBook() *OrderBook {
 	return &OrderBook{
-		BuyOrders:  NewQueue(),
-		SellOrders: NewQueue(),
+		BuyOrders:  queue.NewPriorityQueue(true),
+		SellOrders: queue.NewPriorityQueue(false),
 	}
 }
 
 func (ob *OrderBook) PlaceOrder(order *Order) error {
+	item := &queue.Item{
+		Priority: int(order.Price),
+		Item:     order,
+	}
+
 	if order.Type == BUY {
-		ob.BuyOrders.Enqueue(order)
+		ob.BuyOrders.Push(item)
 	}
 
 	if order.Type == SELL {
-		ob.SellOrders.Enqueue(order)
+		ob.SellOrders.Push(item)
 	}
 
 	return nil

@@ -1,4 +1,4 @@
-package engine
+package queue
 
 type Queue struct {
 	items []interface{}
