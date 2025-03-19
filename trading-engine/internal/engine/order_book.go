@@ -1,6 +1,8 @@
 package engine
 
-import "github.com/ferizoozoo/crypto-trading-simulator/trading-engine/internal/queue"
+import (
+	"github.com/ferizoozoo/crypto-trading-simulator/trading-engine/internal/queue"
+)
 
 type OrderBook struct {
 	BuyOrders  *queue.PriorityQueue
@@ -14,10 +16,12 @@ func NewOrderBook() *OrderBook {
 	}
 }
 
-func (ob *OrderBook) PlaceOrder(order *Order) error {
+func (ob *OrderBook) PlaceOrder(order *Order) (*Trade, error) {
+	// TODO: maybe define an interface for Item, so if Order implements it, we don't need this
 	item := &queue.Item{
-		Priority: int(order.Price),
-		Item:     order,
+		PrimaryRank:   int(order.Price),
+		SecondaryRank: int(order.Timestamp),
+		Item:          order,
 	}
 
 	if order.Type == BUY {
@@ -28,5 +32,8 @@ func (ob *OrderBook) PlaceOrder(order *Order) error {
 		ob.SellOrders.Push(item)
 	}
 
-	return nil
+	// TODO: this should be replaced with the pub/sub pattern
+	trade, err := NewMatcher(ob).MatchOrders()
+
+	return trade, err
 }

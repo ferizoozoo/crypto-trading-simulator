@@ -20,7 +20,7 @@ func TestBuyOrder(t *testing.T) {
 		Type:   engine.BUY,
 	}
 
-	err := ob.PlaceOrder(&order)
+	_, err := ob.PlaceOrder(&order)
 
 	if err != nil {
 		t.Errorf("Expected no error, but got: %v", err)
@@ -41,7 +41,7 @@ func TestSellOrder(t *testing.T) {
 		Type:   engine.SELL,
 	}
 
-	err := ob.PlaceOrder(&order)
+	_, err := ob.PlaceOrder(&order)
 
 	if err != nil {
 		t.Errorf("Expected no error, but got: %v", err)

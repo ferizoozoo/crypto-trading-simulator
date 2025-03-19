@@ -7,9 +7,9 @@ import (
 )
 
 func TestPush(t *testing.T) {
-	item1 := &queue.Item{1, 10}
-	item2 := &queue.Item{2, 20}
-	item3 := &queue.Item{3, 30}
+	item1 := &queue.Item{2, 2, 10}
+	item2 := &queue.Item{2, 3, 20}
+	item3 := &queue.Item{3, 4, 30}
 
 	pq := queue.NewPriorityQueue(true)
 
@@ -26,9 +26,9 @@ func TestPop(t *testing.T) {
 	isMaxHeap := true
 	pq := queue.NewPriorityQueue(isMaxHeap)
 
-	item1 := &queue.Item{10, 10}
-	item2 := &queue.Item{2, 20}
-	item3 := &queue.Item{3, 30}
+	item1 := &queue.Item{10, 4, 10}
+	item2 := &queue.Item{10, 5, 20}
+	item3 := &queue.Item{3, 2, 30}
 
 	pq.Push(item1)
 	pq.Push(item2)
@@ -36,11 +36,11 @@ func TestPop(t *testing.T) {
 
 	poppedItem := pq.Pop().(*queue.Item)
 
-	if isMaxHeap && poppedItem.Priority != 10 {
-		t.Errorf("Expected priority 10, but got %d", poppedItem.Priority)
+	if isMaxHeap && poppedItem.PrimaryRank != 10 && poppedItem.SecondaryRank != 4 {
+		t.Errorf("Expected primary rank 10 and secondary rank 4, but got %d and %d", poppedItem.PrimaryRank, poppedItem.SecondaryRank)
 	}
 
-	if !isMaxHeap && poppedItem.Priority != 2 {
-		t.Errorf("Expected priority 2, but got %d", poppedItem.Priority)
+	if !isMaxHeap && poppedItem.PrimaryRank != 3 && poppedItem.SecondaryRank != 2 {
+		t.Errorf("Expected primary rank 3 and secondary rank 2, but got %d and %d", poppedItem.PrimaryRank, poppedItem.SecondaryRank)
 	}
 }

@@ -1,8 +1,9 @@
 package queue
 
 type Item struct {
-	Priority int
-	Item     interface{}
+	PrimaryRank   int
+	SecondaryRank int
+	Item          interface{}
 }
 
 type PriorityQueue struct {
@@ -23,9 +24,11 @@ func (pq *PriorityQueue) Len() int {
 
 func (pq *PriorityQueue) Less(i, j int) bool {
 	if pq.isMaxHeap {
-		return pq.items[i].Priority > pq.items[j].Priority
+		return pq.items[i].PrimaryRank > pq.items[j].PrimaryRank ||
+			(pq.items[i].PrimaryRank == pq.items[j].PrimaryRank && pq.items[i].SecondaryRank < pq.items[j].SecondaryRank)
 	}
-	return pq.items[i].Priority < pq.items[j].Priority
+	return pq.items[i].PrimaryRank < pq.items[j].PrimaryRank ||
+		(pq.items[i].PrimaryRank == pq.items[j].PrimaryRank && pq.items[i].SecondaryRank < pq.items[j].SecondaryRank)
 }
 
 func (pq *PriorityQueue) Size() int {
@@ -56,7 +59,7 @@ func (pq *PriorityQueue) Pop() interface{} {
 
 	if len(pq.items) == 1 {
 		item := (pq.items)[0]
-		pq.items = (pq.items)[:0]
+		pq.items = nil
 		return item
 	}
 
