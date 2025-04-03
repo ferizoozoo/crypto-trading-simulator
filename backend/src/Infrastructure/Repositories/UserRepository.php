@@ -31,6 +31,17 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
         return $this->findOneBy(['email' => $email]);
     }
 
+    public function findById(int $id): ?User
+    {
+        return $this->findOneBy(['id' => $id]);
+    }
+
+    public function update(User $user): bool
+    {
+        $this->entityManager->flush();
+        return true;
+    }
+
     public function deleteByEmail(string $email): bool
     {
         $user = $this->findByEmail($email);

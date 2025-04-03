@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Controller\Services\UserServiceInterface;
 use App\Entities\User;
-use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,14 +38,14 @@ class AuthController extends AbstractController
     }
 
     #[Route('/login', name: 'app_user_login', methods: ['POST'])]
-    public function login(#[CurrentUser] ?UserInterface $user, JWTTokenManagerInterface $jwtManager): JsonResponse
+    public function login(#[CurrentUser] ?UserInterface $user): JsonResponse
     {
         // TODO: maybe refactor the logic into a global exception handler
         try {
             if (!$user) {
                 return $this->json(['error' => 'Invalid credentials'], Response::HTTP_UNAUTHORIZED);
             }
-            $token = $jwtManager->create($user);
+            $token = $this->userService->authenticate($user);
             return $this->json(['jwt-token' => $token], Response::HTTP_OK);
         } catch (\Exception $exception) {
             return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);

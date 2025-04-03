@@ -24,6 +24,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: "json")]
     private array $roles = [];
 
+    #[ORM\Column(type: "float", nullable: true)]
+    private float $balance;
+
     public function __construct(string $email, string $password)
     {
         $this->email = $email;
@@ -65,6 +68,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getPassword(): string
     {
         return $this->password;
+    }
+
+    public function getBalance(): float
+    {
+        return $this->balance;
+    }
+
+    public function setBalance(float $balance): self
+    {
+        $this->balance = $balance;
+        return $this;
     }
 
     public function eraseCredentials(): void
