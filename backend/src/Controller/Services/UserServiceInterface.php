@@ -9,7 +9,7 @@ interface UserServiceInterface
 {
     public function register(User $user);
     public function authenticate(User $user): ?string;
-    public function updateBalance(User $user, float $amount);
+    public function updateBalance(int $userId, float $amount);
     public function getUserBalance(int $userId);
     public function findByEmail(string $email): ?User;
     public function deleteByEmail(string $email): bool;

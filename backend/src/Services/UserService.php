@@ -38,8 +38,9 @@ class UserService implements UserServiceInterface
         return $this->userRepository->deleteByEmail($email);
     }
 
-    public function updateBalance(User $user, float $amount)
+    public function updateBalance(int $userId, float $amount)
     {
+        $user = $this->userRepository->findById($userId);
         $user->setBalance($user->getBalance() + $amount);
         $this->userRepository->update($user);
     }
@@ -47,6 +48,9 @@ class UserService implements UserServiceInterface
     public function getUserBalance(int $userId)
     {
         $user = $this->userRepository->findById($userId);
+        if ($user === null) {
+            dd('user not found ', $userId);
+        }
         return $user->getBalance();
     }
 }

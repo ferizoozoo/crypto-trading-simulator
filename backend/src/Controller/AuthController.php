@@ -30,7 +30,11 @@ class AuthController extends AbstractController
         // TODO: maybe refactor the logic into a global exception handler
         try {
             $data = json_decode($request->getContent(), true);
-            $this->userService->register(new User($data['email'], $data['password']));
+            // TODO: creating a user object and then pass it to the service is smelly
+            if ($data['balance'] == null) {
+                $data['balance'] = 0;
+            }
+            $this->userService->register(new User($data['email'], $data['password'], $data['balance']));
             return $this->json([], Response::HTTP_CREATED);
         } catch (\Exception $exception) {
             return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);

@@ -27,10 +27,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: "float", nullable: true)]
     private float $balance;
 
-    public function __construct(string $email, string $password)
+    public function __construct(string $email, string $password, float $balance = 0.0)
     {
         $this->email = $email;
         $this->password = password_hash($password, PASSWORD_BCRYPT);
+        $this->balance = $balance;
         $this->roles = ['ROLE_USER'];
     }
 

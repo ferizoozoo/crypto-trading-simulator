@@ -24,7 +24,27 @@ class UserController extends AbstractController
     #[Route('/balance', name: 'app_user_balance', methods: ['GET'])]
     public function getBalance(Request $request): JsonResponse
     {
-        $userId = $request->getContent();
+        $userId = $this->getUser()->getId();
         return $this->json($this->userService->getUserBalance($userId), Response::HTTP_OK);
+    }
+
+    #[Route('/balance/withdraw', name: 'app_user_balance_withdraw', methods: ['POST'])]
+    public function withdraw(Request $request): JsonResponse
+    {
+        $userId = $this->getUser()->getId();
+        $amount = json_decode($request->getContent(), true);
+        if ($amount < 0) return $this->json(['message' => 'Amount must be positive'], Response::HTTP_BAD_REQUEST);
+        $this->userService->updateBalance((int)$userId, -$amount);
+        return $this->json([], Response::HTTP_OK);
+    }
+
+    #[Route('/balance/deposit', name: 'app_user_balance_deposit', methods: ['POST'])]
+    public function deposit(Request $request): JsonResponse
+    {
+        $userId = $this->getUser()->getId();
+        $amount = json_decode($request->getContent(), true);
+        if ($amount < 0) return $this->json(['message' => 'Amount must be positive'], Response::HTTP_BAD_REQUEST);
+        $this->userService->updateBalance((int)$userId, $amount);
+        return $this->json([], Response::HTTP_OK);
     }
 }
