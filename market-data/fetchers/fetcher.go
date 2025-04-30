@@ -1,7 +1,7 @@
 package fetchers
 
 type Fetcher interface {
-	Fetch()
+	Fetch(string)
 }
 
 type MarketData struct {

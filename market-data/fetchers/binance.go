@@ -12,21 +12,34 @@ const BinanceUrl = "stream.binance.com:9443"
 
 type BinanceFetcher struct {
 	url    string
-	symbol string
 	stream chan []byte
 	conn   *websocket.Conn
 }
 
-func NewBinanceFetcher(symbol string) *BinanceFetcher {
-	u := url.URL{Scheme: "wss", Host: BinanceUrl, Path: fmt.Sprintf("/ws/%s@trade", symbol)}
+func NewBinanceFetcher() *BinanceFetcher {
+	return &BinanceFetcher{stream: make(chan []byte)}
+}
+
+func (bf *BinanceFetcher) connect(symbol string) error {
+	urlPath := fmt.Sprintf("/ws/%s@trade", symbol)
+	u := url.URL{Scheme: "wss", Host: BinanceUrl, Path: urlPath}
+
 	conn, _, err := websocket.DefaultDialer.Dial(u.String(), nil)
+	if err != nil {
+		return err
+	}
+
+	bf.url = u.String()
+	bf.conn = conn
+	return nil
+}
+
+func (bf *BinanceFetcher) Fetch(symbol string) {
+	err := bf.connect(symbol)
 	if err != nil {
 		panic(err)
 	}
-	return &BinanceFetcher{url: u.String(), symbol: symbol, stream: make(chan []byte), conn: conn}
-}
 
-func (bf *BinanceFetcher) Fetch() {
 	defer bf.conn.Close()
 
 	for {

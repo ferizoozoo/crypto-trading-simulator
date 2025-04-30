@@ -7,9 +7,9 @@ import (
 
 func TestFetchBinance(t *testing.T) {
 	symbol := "btcusdt"
-	binanceFetcher := NewBinanceFetcher(symbol)
+	binanceFetcher := NewBinanceFetcher()
 
-	go binanceFetcher.Fetch()
+	go binanceFetcher.Fetch(symbol)
 
 	stream := <-binanceFetcher.stream
 	var data map[string]interface{}
