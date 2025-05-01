@@ -70,3 +70,7 @@ func (bf *BinanceFetcher) Fetch(symbol string) {
 		}
 	}
 }
+
+func (bf *BinanceFetcher) GetStream() chan []byte {
+	return bf.stream
+}
