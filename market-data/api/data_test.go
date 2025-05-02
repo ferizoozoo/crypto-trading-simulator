@@ -16,7 +16,6 @@ func TestFetchingMarketData(t *testing.T) {
 	server := http.Server{Addr: ":8080", Handler: mux}
 	go server.ListenAndServe()
 
-	// TODO: open websocket connection to the server
 	conn, _, err := websocket.DefaultDialer.Dial("ws://localhost:8080/data?fetcherType=0&symbol=btcusdt", nil)
 	if err != nil {
 		t.Errorf("Expected %v, got %v", nil, err)
