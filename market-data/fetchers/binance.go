@@ -57,8 +57,9 @@ func (bf *BinanceFetcher) Fetch(symbol string) {
 			}
 
 			cleanedData := MarketData{
-				Symbol: rawData["s"].(string),
-				Price:  rawData["p"].(string),
+				Symbol:    rawData["s"].(string),
+				Price:     rawData["p"].(string),
+				Timestamp: rawData["E"].(float64),
 			}
 			cleanedMessage, err := json.Marshal(cleanedData)
 

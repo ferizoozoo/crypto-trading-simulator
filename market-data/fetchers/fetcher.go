@@ -12,8 +12,9 @@ type Fetcher interface {
 }
 
 type MarketData struct {
-	Symbol string
-	Price  string
+	Symbol    string
+	Price     string
+	Timestamp float64
 }
 
 func GetFetcher(fetcherType FetcherType) Fetcher {
